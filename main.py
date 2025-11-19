@@ -1,8 +1,8 @@
-import sys
 import random
-import pygame
+import sys
 from typing import Optional
 
+import pygame
 
 # --- Configuration Constants ---
 WIDTH, HEIGHT = 800, 600
@@ -28,14 +28,15 @@ FG_COLOR = (235, 235, 235)
 MID_COLOR = (70, 70, 70)
 ACCENT_COLOR = (0, 200, 130)
 
-
 # --- Helper Functions ---
+
 
 def clamp(n: float, lo: float, hi: float) -> float:
     return max(lo, min(hi, n))
 
 
 # --- Game Objects ---
+
 
 class Paddle:
     def __init__(self, x: int, y: int):
@@ -145,7 +146,11 @@ class AIController:
             anticipate = clamp(abs(ball.vel.x) * 2.0, 0.0, 28.0)
             if ball.rect.centerx < WIDTH * 0.65:
                 anticipate *= 0.5
-        target = self.current_target_y + (anticipate if self.paddle.rect.centery < self.current_target_y else -anticipate)
+        target = self.current_target_y + (
+            anticipate
+            if self.paddle.rect.centery < self.current_target_y
+            else -anticipate
+        )
 
         # Follow target with capped speed
         self.paddle.follow_target(target)
@@ -232,7 +237,9 @@ class Game:
         ]
         for i, text in enumerate(lines):
             surf = self.ui_font.render(text, True, MID_COLOR)
-            self.screen.blit(surf, (WIDTH // 2 - surf.get_width() // 2, HEIGHT - 30 - i * 22))
+            self.screen.blit(
+                surf, (WIDTH // 2 - surf.get_width() // 2, HEIGHT - 30 - i * 22)
+            )
 
     def check_win(self) -> None:
         if self.score[0] >= WIN_SCORE or self.score[1] >= WIN_SCORE:
@@ -240,7 +247,13 @@ class Game:
             winner = "Left" if self.score[0] > self.score[1] else "Right"
             msg = f"{winner} Player Wins! Press R to play again."
             surf = self.score_font.render(msg, True, ACCENT_COLOR)
-            self.screen.blit(surf, (WIDTH // 2 - surf.get_width() // 2, HEIGHT // 2 - surf.get_height() // 2))
+            self.screen.blit(
+                surf,
+                (
+                    WIDTH // 2 - surf.get_width() // 2,
+                    HEIGHT // 2 - surf.get_height() // 2,
+                ),
+            )
             pygame.display.flip()
 
     def reset(self) -> None:
